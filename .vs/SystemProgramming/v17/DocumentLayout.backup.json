@@ -1,15 +1,20 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\PC\\source\\repos\\in-cogni\\SystemProgramming\\",
-  "Documents": [],
+  "WorkspaceRootPath": "C:\\Users\\PC\\source\\repos\\SystemProgramming\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A94B098C-0AF1-4ACF-B09A-3DDC872AAD45}|Car\\Car.vcxproj|C:\\Users\\PC\\source\\repos\\SystemProgramming\\Car\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A94B098C-0AF1-4ACF-B09A-3DDC872AAD45}|Car\\Car.vcxproj|solutionrelative:Car\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
-      "Orientation": 1,
+      "Orientation": 0,
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedHeight": 361,
-          "SelectedChildIndex": -1,
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -18,6 +23,19 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "main.cpp",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\SystemProgramming\\Car\\main.cpp",
+              "RelativeDocumentMoniker": "Car\\main.cpp",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\SystemProgramming\\Car\\main.cpp*",
+              "RelativeToolTip": "Car\\main.cpp*",
+              "ViewState": "AgIAADEAAAAAAAAAAAAAADYAAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-04-22T16:20:14.02Z",
+              "EditorCaption": ""
             }
           ]
         }
