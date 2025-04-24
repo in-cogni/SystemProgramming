@@ -66,8 +66,8 @@ class Engine
 	const double CONSUMPTION;//расход на 100 км
 	const double DEFAULT_CONSUMPTION_PER_SECOND;
 	double consumption_per_second;
-public:
 	bool is_started;
+public:
 	double get_consumption_per_second()const
 	{
 		return consumption_per_second;
