@@ -30,8 +30,6 @@ public:
 		cout << "Tank:";
 			if (capacity < MIN_TANK_CAPACITY)cout << "Min capacity was applied" << endl;
 			if (capacity > MAX_TANK_CAPACITY)cout << "Max capacity was applied" << endl;
-		//this->CAPACITY = capacity;
-		//this->fuel_level = 0;
 		cout << "Tank is ready" << endl;
 	}
 	~Tank()
@@ -68,8 +66,8 @@ class Engine
 	const double CONSUMPTION;//расход на 100 км
 	const double DEFAULT_CONSUMPTION_PER_SECOND;
 	double consumption_per_second;
-	bool is_started;
 public:
+	bool is_started;
 	double get_consumption_per_second()const
 	{
 		return consumption_per_second;
@@ -121,6 +119,22 @@ class Car
 	int speed;
 	const int MAX_SPEED;
 	bool driver_inside;
+
+	//////////////////////////////////////////////////////////////////////
+	void fuel_consumption()
+	{
+		if (engine.started())
+		{
+			tank.give_fuel(engine.get_consumption_per_second());
+			if(tank.get_fuel_level()<=0)
+			{
+				engine.stop();
+				cout << "The fuel has run out and the engine is stopped";
+			}
+		}
+	}
+	//////////////////////////////////////////////////////////////////////
+
 public:
 	Car(double consumption, int capacity, int max_speed = 250) :
 		MAX_SPEED
@@ -158,8 +172,10 @@ public:
 			switch (key)
 			{
 			case Enter:
+			{
 				driver_inside ? get_out() : get_in();
 				break;
+			}
 			}
 		} while (key != Escape);
 	}
@@ -171,9 +187,31 @@ public:
 			cout << "Fuel level: " << tank.get_fuel_level() << " liters\n";
 			cout << "Engine is " << (engine.started() ? "started" : "stopped") << endl;
 			cout << "Speed: " << speed << " km/h\n";
+			fuel_consumption();
 			Sleep(1000);
 		}
 	}
+	//////////////////////////////////////////////////////////////////////
+	void start_engine()
+	{
+		if (tank.get_fuel_level() > 0)
+		{
+			engine.start();
+			cout << "Engine started\n";
+		}
+		else
+		{
+			cout << "No fuel to start engine\n";
+		}
+	}
+	//////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////
+	void fill(double amount)
+	{
+		tank.fill(amount);
+	}
+	//////////////////////////////////////////////////////////////////////
+
 	void info()const
 	{
 		engine.info();
@@ -281,7 +319,10 @@ void main()
 
 	Car bmw(10, 80, 270);
 	//bmw.info();
+	bmw.fill(30);
+	bmw.start_engine();
 	bmw.control();
+
 	//Car car(80, 10);//80 - вмсетимость бака, 10 - расход л/100км
 	//double fuel;
 	//short choice;
