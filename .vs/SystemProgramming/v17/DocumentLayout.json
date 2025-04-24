@@ -14,15 +14,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
             },
             {
               "$type": "Document",
@@ -32,7 +28,7 @@
               "RelativeDocumentMoniker": "Car\\main.cpp",
               "ToolTip": "C:\\Users\\PC\\source\\repos\\SystemProgramming\\Car\\main.cpp",
               "RelativeToolTip": "Car\\main.cpp",
-              "ViewState": "AgIAAFoAAAAAAAAAAAAAAHEAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAK0AAAAAAAAAAADwv7cAAAAEAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-04-22T16:20:14.02Z",
               "EditorCaption": ""
