@@ -126,20 +126,6 @@ class Car
 	{
 		std::thread panel_thread;
 	}threads_container;//Эта структура не имеет имени и реализует только 1 экземпляр.
-	////////////////////////////////////////////////////////////////////////
-	//void fuel_consumption()
-	//{
-	//	if (engine.started())
-	//	{
-	//		tank.give_fuel(engine.get_consumption_per_second());
-	//		if(tank.get_fuel_level()<=0)
-	//		{
-	//			engine.stop();
-	//			cout << "The fuel has run out and the engine is stopped";
-	//		}
-	//	}
-	//}
-	////////////////////////////////////////////////////////////////////////
 
 public:
 	Car(double consumption, int capacity, int max_speed = 250) :
@@ -208,26 +194,6 @@ public:
 			Sleep(1000);
 		}
 	}
-	////////////////////////////////////////////////////////////////////////
-	//void start_engine()
-	//{
-	//	if (tank.get_fuel_level() > 0)
-	//	{
-	//		engine.start();
-	//		cout << "Engine started\n";
-	//	}
-	//	else
-	//	{
-	//		cout << "No fuel to start engine\n";
-	//	}
-	//}
-	////////////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////////
-	//void fill(double amount)
-	//{
-	//	tank.fill(amount);
-	//}
-	////////////////////////////////////////////////////////////////////////
 
 	void info()const
 	{
@@ -237,83 +203,6 @@ public:
 		cout << "MaxSpeed: " << MAX_SPEED << " km/h\n";
 	}
 };
-
-//#define TANK_CHECK
-//#define ENGINE_CHECK
-//class Engine
-//{
-//	double consumption_100, comsumption_sec;
-//	bool run;
-//public:
-//	Engine(double consumpiton) :consumption_100(consumpiton), comsumption_sec(consumpiton / 1000000 * 30)
-//		//пояснение к comsumption_sec(consumpiton / 1000000 * 30): 
-//		//сначала нашла скарость из условия домашки (Если расход 10л/100км, то расход за одну секунду будет 0.0003 л/c)
-//		//по форуле: расх(л/с) = ( расх(л/100км) / 1000000 ) * скорость(м/с) => скорость = 30 м/с
-//		//и далее можем посчитать любой расход в л/с, зная расход в л/100км
-//	{
-//		cout << "Engine is ready\n";
-//	}
-//	~Engine()
-//	{
-//		cout << "Engine is over\n";
-//	}
-//	void start()
-//	{
-//		run = true;
-//		cout << "Engine is running\n";
-//	}
-//	void stop()
-//	{
-//		run = false;
-//		cout << "Engine is stopped\n";
-//	}
-//	bool running() const
-//	{
-//		return run;
-//	}
-//	void info()const
-//	{
-//		cout << "\nEngine info:\n";
-//		cout << "Consumption per 100 km:\t" << consumption_100 << " liters / 100 km\n";//расход л/100 км
-//		cout << "Consumption per 1 sec:\t" << comsumption_sec << " liters / 1 sec\n";//расход л/с
-//		cout << "Condition: "<< (running()?"running":"stopped") <<"\n";//состояние (запущен/остановлен)
-//	}
-//};
-//
-//class Car
-//{
-//	Tank tank;
-//	Engine engine;
-//public:
-//	Car(int tank_capacity, double engine_consumption):tank(tank_capacity), engine(engine_consumption)
-//	{
-//		cout << "Car is ready\n";
-//	}
-//	~Car()
-//	{
-//		cout << "Car is over\n";
-//	}
-//	void fill(double amount)
-//	{
-//		tank.fill(amount);
-//	}
-//	void start_engine()
-//	{
-//		if (tank.get_fuel_level() > 0) engine.start();
-//		else cout << "No fuel\n";
-//	}
-//	void stop_engine()
-//	{
-//		engine.stop();
-//	}
-//	void info() const
-//	{
-//		cout << "\n----Car info----\n";
-//		tank.info();
-//		engine.info();
-//		cout << "\n-------------------\n\n";
-//	}
-//};
 
 void main()
 {
