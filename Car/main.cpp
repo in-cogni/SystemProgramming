@@ -1,10 +1,12 @@
 ﻿#include <Windows.h>
 #include <iostream>
-#include<conio.h>
-#include<thread>
+#include <conio.h>
+#include <thread>
+
 using std::cin;
 using std::cout;
 using std::endl;
+using namespace std::chrono_literals;
 
 #define Enter 13
 #define Escape    27
@@ -125,6 +127,7 @@ class Car
 	struct
 	{
 		std::thread panel_thread;
+		std::thread engine_idle_thread;
 	}threads_container;//Эта структура не имеет имени и реализует только 1 экземпляр.
 
 public:
@@ -160,12 +163,27 @@ public:
 		system("CLS");
 		cout << "You are out of the Car\n";
 	}
+	void start()
+	{
+		if (tank.get_fuel_level())
+		{
+			engine.start();
+			threads_container.engine_idle_thread = std::thread(&Car::engine_idle, this);
+		}
+	}
+	void stop()
+	{
+		engine.stop();
+		if (threads_container.engine_idle_thread.joinable())
+			threads_container.engine_idle_thread.join();
+	}
 	void control()
 	{
 		char key = 0;
 		do
 		{
-			key = _getch();
+			key = 0;
+			if(_kbhit())key = _getch();
 			switch (key)
 			{
 			case Enter:
@@ -176,11 +194,23 @@ public:
 				cout << "Введите объем топлива: "; cin >> fuel;
 				tank.fill(fuel);
 				break;
+			case 'I': case 'i'://Ignition
+				if (driver_inside)!engine.started() ? start() : stop();
+					break;
 			case Escape:
+				stop();
 				get_out();
 			}
+			if (tank.get_fuel_level() <= 0)stop();
 		} while (key != Escape);
 		//Concurent execution(одновременное выполнение)
+	}
+	void engine_idle()
+	{
+		while (engine.started() && tank.give_fuel(engine.get_consumption_per_second()))
+		{
+			std::this_thread::sleep_for(1s);
+		}
 	}
 	void panel()
 	{
@@ -188,6 +218,14 @@ public:
 		{
 			system("CLS");
 			cout << "Fuel level: " << tank.get_fuel_level() << " liters\n";
+			if (tank.get_fuel_level() < 5)
+			{
+				HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+				SetConsoleTextAttribute(hConsole, 0xCF);
+				cout << " LOW FUEL ";
+				SetConsoleTextAttribute(hConsole, 0x07);
+			}
+			cout << endl;
 			cout << "Engine is " << (engine.started() ? "started" : "stopped") << endl;
 			cout << "Speed: " << speed << " km/h\n";
 			/*fuel_consumption();*/
