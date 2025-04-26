@@ -126,20 +126,20 @@ class Car
 	{
 		std::thread panel_thread;
 	}threads_container;//Эта структура не имеет имени и реализует только 1 экземпляр.
-	////////////////////////////////////////////////////////////////////////
-	//void fuel_consumption()
-	//{
-	//	if (engine.started())
-	//	{
-	//		tank.give_fuel(engine.get_consumption_per_second());
-	//		if(tank.get_fuel_level()<=0)
-	//		{
-	//			engine.stop();
-	//			cout << "The fuel has run out and the engine is stopped";
-	//		}
-	//	}
-	//}
-	////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////
+	void fuel_consumption()
+	{
+		if (engine.started())
+		{
+			tank.give_fuel(engine.get_consumption_per_second());
+			if (tank.get_fuel_level() <= 0)
+			{
+				engine.stop();
+				cout << "The fuel has run out and the engine is stopped";
+			}
+		}
+	}
+	//////////////////////////////////////////////////////////////////////
 
 public:
 	Car(double consumption, int capacity, int max_speed = 250) :
@@ -164,7 +164,7 @@ public:
 	{
 		driver_inside = true;
 		threads_container.panel_thread = std::thread(&Car::panel, this);
-		//panel();
+		/*panel()*/;
 	}
 	void get_out()
 	{
@@ -190,6 +190,9 @@ public:
 				cout << "Введите объем топлива: "; cin >> fuel;
 				tank.fill(fuel);
 				break;
+			case 'D': case 'd'://остановить/завести двигатель
+				engine.started() ? engine.stop() : engine.start();
+				break;
 			case Escape:
 				get_out();
 			}
@@ -204,7 +207,7 @@ public:
 			cout << "Fuel level: " << tank.get_fuel_level() << " liters\n";
 			cout << "Engine is " << (engine.started() ? "started" : "stopped") << endl;
 			cout << "Speed: " << speed << " km/h\n";
-			/*fuel_consumption();*/
+			fuel_consumption();//работает при включенном двигателе
 			Sleep(1000);
 		}
 	}
@@ -336,7 +339,6 @@ void main()
 
 	Car bmw(10, 80, 270);
 	//bmw.info();
-
 	bmw.control();
 
 	//Car car(80, 10);//80 - вмсетимость бака, 10 - расход л/100км
