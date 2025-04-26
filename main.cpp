@@ -1,7 +1,10 @@
 ﻿#include <Windows.h>
 #include <iostream>
 #include<conio.h>
-using namespace std;
+#include<thread>
+using std::cin;
+using std::cout;
+using std::endl;
 
 #define Enter 13
 #define Escape    27
@@ -19,17 +22,17 @@ public:
 	{
 		return fuel_level;
 	}
-	Tank(int capacity):CAPACITY
+	Tank(int capacity) :CAPACITY
 	(
-		capacity<MIN_TANK_CAPACITY?MIN_TANK_CAPACITY:
-		capacity>MAX_TANK_CAPACITY?MAX_TANK_CAPACITY:
+		capacity<MIN_TANK_CAPACITY ? MIN_TANK_CAPACITY :
+		capacity>MAX_TANK_CAPACITY ? MAX_TANK_CAPACITY :
 		capacity
 	),
 		fuel_level(0)
 	{
 		cout << "Tank:";
-			if (capacity < MIN_TANK_CAPACITY)cout << "Min capacity was applied" << endl;
-			if (capacity > MAX_TANK_CAPACITY)cout << "Max capacity was applied" << endl;
+		if (capacity < MIN_TANK_CAPACITY)cout << "Min capacity was applied" << endl;
+		if (capacity > MAX_TANK_CAPACITY)cout << "Max capacity was applied" << endl;
 		cout << "Tank is ready" << endl;
 	}
 	~Tank()
@@ -66,20 +69,20 @@ class Engine
 	const double CONSUMPTION;//расход на 100 км
 	const double DEFAULT_CONSUMPTION_PER_SECOND;
 	double consumption_per_second;
-public:
 	bool is_started;
+public:
 	double get_consumption_per_second()const
 	{
 		return consumption_per_second;
 	}
-	Engine(double consumption):
+	Engine(double consumption) :
 		CONSUMPTION
-	    (
-			consumption < MIN_ENGINE_CONSUMPTION? MIN_ENGINE_CONSUMPTION:
-			consumption >MAX_ENGINE_CONSUMPTION?MAX_ENGINE_CONSUMPTION:
+		(
+			consumption < MIN_ENGINE_CONSUMPTION ? MIN_ENGINE_CONSUMPTION :
+			consumption >MAX_ENGINE_CONSUMPTION ? MAX_ENGINE_CONSUMPTION :
 			consumption
 		),
-		DEFAULT_CONSUMPTION_PER_SECOND(CONSUMPTION*3e-5),
+		DEFAULT_CONSUMPTION_PER_SECOND(CONSUMPTION * 3e-5),
 		consumption_per_second(DEFAULT_CONSUMPTION_PER_SECOND)
 	{
 		is_started = false;
@@ -119,14 +122,17 @@ class Car
 	int speed;
 	const int MAX_SPEED;
 	bool driver_inside;
-
+	struct
+	{
+		std::thread panel_thread;
+	}threads_container;//Эта структура не имеет имени и реализует только 1 экземпляр.
 	//////////////////////////////////////////////////////////////////////
 	void fuel_consumption()
 	{
 		if (engine.started())
 		{
 			tank.give_fuel(engine.get_consumption_per_second());
-			if(tank.get_fuel_level()<=0)
+			if (tank.get_fuel_level() <= 0)
 			{
 				engine.stop();
 				cout << "The fuel has run out and the engine is stopped";
@@ -157,11 +163,16 @@ public:
 	void get_in()
 	{
 		driver_inside = true;
-		panel();
+		threads_container.panel_thread = std::thread(&Car::panel, this);
+		/*panel()*/;
 	}
 	void get_out()
 	{
 		driver_inside = false;
+		if (threads_container.panel_thread.joinable())
+			threads_container.panel_thread.join();
+		system("CLS");
+		cout << "You are out of the Car\n";
 	}
 	void control()
 	{
@@ -172,12 +183,21 @@ public:
 			switch (key)
 			{
 			case Enter:
-			{
 				driver_inside ? get_out() : get_in();
 				break;
-			}
+			case 'F': case 'f':
+				double fuel;
+				cout << "Введите объем топлива: "; cin >> fuel;
+				tank.fill(fuel);
+				break;
+			case 'D': case 'd'://остановить/завести двигатель
+				engine.started() ? engine.stop() : engine.start();
+				break;
+			case Escape:
+				get_out();
 			}
 		} while (key != Escape);
+		//Concurent execution(одновременное выполнение)
 	}
 	void panel()
 	{
@@ -187,30 +207,30 @@ public:
 			cout << "Fuel level: " << tank.get_fuel_level() << " liters\n";
 			cout << "Engine is " << (engine.started() ? "started" : "stopped") << endl;
 			cout << "Speed: " << speed << " km/h\n";
-			fuel_consumption();
+			fuel_consumption();//работает при включенном двигателе
 			Sleep(1000);
 		}
 	}
-	//////////////////////////////////////////////////////////////////////
-	void start_engine()
-	{
-		if (tank.get_fuel_level() > 0)
-		{
-			engine.start();
-			cout << "Engine started\n";
-		}
-		else
-		{
-			cout << "No fuel to start engine\n";
-		}
-	}
-	//////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////////
-	void fill(double amount)
-	{
-		tank.fill(amount);
-	}
-	//////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////
+	//void start_engine()
+	//{
+	//	if (tank.get_fuel_level() > 0)
+	//	{
+	//		engine.start();
+	//		cout << "Engine started\n";
+	//	}
+	//	else
+	//	{
+	//		cout << "No fuel to start engine\n";
+	//	}
+	//}
+	////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////
+	//void fill(double amount)
+	//{
+	//	tank.fill(amount);
+	//}
+	////////////////////////////////////////////////////////////////////////
 
 	void info()const
 	{
@@ -319,8 +339,6 @@ void main()
 
 	Car bmw(10, 80, 270);
 	//bmw.info();
-	bmw.fill(30);
-	bmw.start_engine();
 	bmw.control();
 
 	//Car car(80, 10);//80 - вмсетимость бака, 10 - расход л/100км
