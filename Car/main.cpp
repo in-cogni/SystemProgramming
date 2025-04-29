@@ -281,6 +281,7 @@ public:
 				SetConsoleTextAttribute(hConsole, 0x07);
 			}
 			cout << endl;
+			cout << "Consumption: " << engine.get_consumption_per_second() << " liters/s\n";
 			cout << "Engine is " << (engine.started() ? "started" : "stopped") << endl;
 			cout << "Speed: " << speed << " km/h\n";
 			/*fuel_consumption();*/
